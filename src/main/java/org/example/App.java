@@ -25,6 +25,9 @@ public class App
         // dodanie książek
         generateData(entityManager);
 
+        // aktualizacja tytułu książki
+        updateData(entityManager);
+
 
         // zamknięcie połączenia z bazą
         entityManager.close();
@@ -77,12 +80,6 @@ public class App
                 List.of(chapter5)
         );
 
-        Book book4 = new Book(
-                "Książka czwarta",
-                LocalDate.of(1999,01,19),
-                List.of(chapter6)
-        );
-
         Author author1 = new Author(
                 "ImięAutora1",
                 "NazwiskoAutora1",
@@ -98,10 +95,11 @@ public class App
         Author author3 = new Author(
                 "ImięAutora3",
                 "NazwiskoAutora3",
-                List.of(book4)
+                List.of(book3)
         );
 
         entityManager.getTransaction().begin();
+
         entityManager.persist(author1);
         entityManager.persist(author2);
         entityManager.persist(author3);
@@ -114,13 +112,15 @@ public class App
         entityManager.persist(book1);
         entityManager.persist(book2);
         entityManager.persist(book3);
-        entityManager.persist(book4);
-
-
-
-
 
         entityManager.getTransaction().commit();
 
+    }
+
+    private static void updateData(EntityManager entityManager){
+        entityManager.getTransaction().begin();
+        Book book = entityManager.find(Book.class,2); // pobranie książki po id z bazy danych
+        book.setTitle("Nowa nazwa książki drugiej"); // zmiana zostanie wysłana przez Hibernate do bazy danych tzn. dirty checking
+        entityManager.getTransaction().commit();
     }
 }

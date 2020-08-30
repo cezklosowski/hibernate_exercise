@@ -34,4 +34,7 @@ public class Book {
         this.chapters = chapters;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }
